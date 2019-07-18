@@ -1,0 +1,12 @@
+@charset "utf-8";
+@import "./config/mixin";
+@import "./config/reset";
+@import "./config/settings";
+@import "./config/animate";
+
+@import "common";
+@import "./pages/home";
+
+@include b('common') {
+	@include fs(12,23);	
+}

@@ -1,0 +1,7 @@
+@include b('home') {
+	@include e('header') {
+		@include m('config') {
+			@include fs(20,25);
+		}
+	}		
+}

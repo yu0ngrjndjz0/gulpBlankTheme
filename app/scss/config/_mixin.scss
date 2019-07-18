@@ -1,0 +1,125 @@
+@charset "utf-8";
+
+// CONFIG
+// ======
+// You can change the configuration here. To use your own config/variables file, just import your variables before using one of the mixins.
+// Output combined s selectors like:
+//    .b__e.is-active {}
+// Set to false to output single, non-combined s ms:
+//    .b__e--is-active {}
+$combined-s-selectors: true !default;
+// .b[separator]e:
+$e-separator: "__" !default;
+// .b[separator]m:
+$m-separator: "--" !default;
+// The default prefix for s m selectors, will be combined with $m-separator:
+$s-prefix: "is" !default;
+// MIXINS
+// ======
+@mixin b($name) {
+    .#{$name} {
+        @content;
+    }
+}
+@mixin size($w, $h){
+    width: $w;
+    height: $h;
+}
+@mixin e($name) {
+    @at-root {
+        &#{$e-separator}#{$name} {
+            @content;
+        }
+    }
+}
+
+@mixin m($name) {
+    @at-root {
+        &#{$m-separator}#{$name} {
+            @content;
+        }
+    }
+}
+
+@mixin s($s, $prefix: $s-prefix) {
+    @if $combined-s-selectors==true {
+        @at-root {
+            &.#{$prefix}-#{$s} {
+                @content;
+            }
+        }
+    }
+    @else {
+        @at-root {
+            &#{$m-separator}#{$prefix}-#{$s} {
+                @content;
+            }
+        }
+    }
+}
+
+
+// braakpoint settings ------------------------------
+@mixin bp($bp_1, $bp_2: 0) {
+
+    $bp_main: 1000;
+
+    @if $bp_1 == 'sp' {
+        @media (max-width: #{$bp_main}px) {
+            @content;
+        }
+    }
+    @else if $bp_1 == 'pc' {
+        @media (min-width: #{$bp_main + 1}px) {
+            @content;
+        }
+    }
+    @else {
+        @if $bp_1 != 0 and $bp_2 != 0 {
+            @media (min-width: $bp_1) and (max-width: $bp_2) {
+                @content;
+            }
+        }
+        @else if $bp_1 == 0 {
+            @media (max-width: $bp_2) {
+                @content;
+            }
+        }
+        @else if $bp_2 == 0 {
+            @media (min-width: $bp_1) {
+                @content;
+            }
+        }
+    }
+}
+
+// common mixins ------------------------------
+@mixin fs($fontsize: 16, $lineheight: 26, $base: 16) {
+    font-size: $fontsize + px;
+    font-size: ($fontsize / $base) * 1rem;
+    line-height: ceil($lineheight*1000 / $fontsize) / 1000;
+}
+@mixin fs-vw($fontsize: 16, $lineheight: 26, $area-width: 320) {
+    font-size: #{($fontsize / $area-width) * 100}vw;
+    line-height: ceil($lineheight*1000 / $fontsize) / 1000;
+}
+@mixin backgroundsize($w:auto, $h:auto){
+    -webkit-background-size: $w $h;
+    background-size: $w $h;
+}
+@mixin transition($options:.2s all ease) {
+    -webkit-transition: ($options);
+    transition: ($options);
+}
+@mixin transform($options) {
+    -webkit-transform: ($options);
+    transform: ($options);
+}
+@mixin animation($options) {
+    -webkit-animation: ($options);
+    animation: ($options);
+}
+
+@mixin cal-percent($width, $wrap: 715) {
+  width: ($width * 100%) / $wrap;
+}
